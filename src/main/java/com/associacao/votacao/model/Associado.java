@@ -25,7 +25,7 @@ public class Associado {
     private String cpf;
     @NotBlank
     private String email;
-    private Boolean Ativo;
+    private Boolean ativo;
     @OneToMany(mappedBy = "associado")
     private List<Voto> votos;
 }
