@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,5 +16,7 @@ public class PautaDTO {
     private String titulo;
     @NotBlank
     private String descricao;
+    @Nullable
+    private Integer duracao;
 
 }

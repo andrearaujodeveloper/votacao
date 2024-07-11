@@ -30,6 +30,8 @@ public class Pauta {
     @Nullable
     private LocalDateTime dataFechamento;
     @NotNull
+    private Integer duracao;
+    @NotNull
     private Boolean abertaVotacao;
     @OneToMany(mappedBy = "pauta")
     private List<Voto> votos;

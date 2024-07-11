@@ -25,6 +25,12 @@ public class AssociadoService implements IAssociadoService {
         Associado associado = AssociadoMapper.INSTANCE.toEntity(associadoDTO);
         return AssociadoMapper.INSTANCE.toResponse(associadoRepository.save(associado));
     }
+
+    @Override
+    public Associado buscarAssociadoPorId(Long id) {
+        return associadoRepository.findById(id).orElseThrow(()-> new RuntimeException("Associado não encontrado"));
+    }
+
     private List<String> validarDadosDeCadastro(AssociadoDTO associadoDTO){
         List<String> erros = new ArrayList<>();
 

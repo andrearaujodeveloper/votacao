@@ -21,6 +21,7 @@ public interface PautaMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "dataAbertura", ignore = true)
     @Mapping(target = "dataFechamento", ignore = true)
+    @Mapping(target = "duracao", source = "duracao", defaultValue = "1")
     Pauta toEntity(PautaDTO pautaDTO);
 
 

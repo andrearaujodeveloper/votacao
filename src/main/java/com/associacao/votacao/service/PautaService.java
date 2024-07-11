@@ -23,6 +23,11 @@ public class PautaService implements IPautaService{
         return PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
     }
 
+    @Override
+    public Pauta buscarPautaPorId(Long id) {
+        return pautaRepository.findById(id).orElseThrow(()->new RuntimeException("Pauta não encontrada"));
+    }
+
     private boolean verificaDuplicidadeDePauta(PautaDTO pautaDTO){
         return pautaRepository.existsByTituloAndDescricao(pautaDTO.getTitulo(), pautaDTO.getDescricao());
     }

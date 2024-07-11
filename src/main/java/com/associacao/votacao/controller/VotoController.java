@@ -1,8 +1,8 @@
 package com.associacao.votacao.controller;
 
-import com.associacao.votacao.dto.AssociadoDTO;
-import com.associacao.votacao.dto.AssociadoResponse;
-import com.associacao.votacao.service.IAssociadoService;
+import com.associacao.votacao.dto.VotoDTO;
+import com.associacao.votacao.dto.VotoResponse;
+import com.associacao.votacao.service.IvotoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/associados")
-public class AssociadoController {
+@RequestMapping("v1/votar")
+public class VotoController {
 
     @Autowired
-    private IAssociadoService associadoService;
+    private IvotoService votoService;
+    @PostMapping()
+    public ResponseEntity<VotoResponse> votar(@RequestBody @Valid VotoDTO votoDTO) {
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<AssociadoResponse> cadastrar(@RequestBody @Valid AssociadoDTO associadoDTO) {
-        return new ResponseEntity(associadoService.cadastrar(associadoDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(votoService.votar(votoDTO), HttpStatus.CREATED);
+
     }
 }

@@ -2,6 +2,7 @@ package com.associacao.votacao.controller;
 
 import com.associacao.votacao.dto.PautaDTO;
 import com.associacao.votacao.dto.PautaResponse;
+import com.associacao.votacao.service.IPautaService;
 import com.associacao.votacao.service.PautaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PautaController {
 
     @Autowired
-    private PautaService pautaService;
+    private IPautaService pautaService;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<PautaResponse> cadastrar(@RequestBody @Valid PautaDTO pautaDTO) {
