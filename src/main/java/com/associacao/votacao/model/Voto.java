@@ -3,16 +3,14 @@ package com.associacao.votacao.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Table(name = "VOTOS")
 @Entity
 public class Voto {
@@ -24,9 +22,9 @@ public class Voto {
     @NotNull
     private LocalDateTime dataVoto;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PAUTA_ID")
+    @JoinColumn(name = "ID_PAUTA")
     private Pauta pauta;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ASSOCIADO_ID")
+    @JoinColumn(name = "ID_ASSOCIADO")
     private Associado associado;
 }

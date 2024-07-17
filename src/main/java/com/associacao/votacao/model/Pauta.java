@@ -33,7 +33,7 @@ public class Pauta {
     private Integer duracao;
     @NotNull
     private Boolean abertaVotacao;
-    @OneToMany(mappedBy = "pauta")
+    @OneToMany(mappedBy = "pauta", fetch = FetchType.LAZY)
     private List<Voto> votos;
 
 }

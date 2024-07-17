@@ -26,6 +26,6 @@ public class Associado {
     @NotBlank
     private String email;
     private Boolean ativo;
-    @OneToMany(mappedBy = "associado")
+    @OneToMany(mappedBy = "associado", fetch = FetchType.LAZY)
     private List<Voto> votos;
 }

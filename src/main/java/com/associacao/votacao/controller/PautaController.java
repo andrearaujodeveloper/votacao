@@ -24,4 +24,7 @@ public class PautaController {
     public ResponseEntity<PautaResponse> cadastrar(@RequestBody @Valid PautaDTO pautaDTO) {
         return new ResponseEntity(pautaService.cadastrar(pautaDTO), HttpStatus.CREATED);
     }
+
+    //TODO criar endpoint para liberar pauta para votação
+    //TODO agendador para fechar as pautas
 }
