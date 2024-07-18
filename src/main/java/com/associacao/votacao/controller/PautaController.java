@@ -25,5 +25,8 @@ public class PautaController {
     public ResponseEntity<PautaResponse> liberarVotacao(@PathVariable Long id) {
         return new ResponseEntity<>(pautaService.liberarVotacao(id), HttpStatus.OK);
     }
-    //TODO agendador para fechar as pautas
+
+    //TODO contar Votos
+    //TODO tratamento de exceções
+    //TODO Testes
 }
