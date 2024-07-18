@@ -11,4 +11,6 @@ public interface IPautaService {
     PautaResponse cadastrar(PautaDTO pautaDTO);
 
     Pauta buscarPautaPorId(Long id);
+
+    PautaResponse liberarVotacao(Long id);
 }

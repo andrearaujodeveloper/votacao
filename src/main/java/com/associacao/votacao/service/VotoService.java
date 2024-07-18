@@ -21,9 +21,9 @@ public class VotoService implements IvotoService {
     private VotoRepository votoRepository;
     @Override
     public VotoResponse votar(VotoDTO votoDTO) {
-        Pauta pauta = validadorDadosVoto.validarPauta(votoDTO.getIdPauta());
-        Associado associado = validadorDadosVoto.validarAssociado(votoDTO.getIdAssociado());
-        Voto voto = Voto.builder()
+        var pauta = validadorDadosVoto.validarPauta(votoDTO.getIdPauta());
+        var associado = validadorDadosVoto.validarAssociado(votoDTO.getIdAssociado());
+        var voto = Voto.builder()
                 .valorVoto(votoDTO.getValorVoto())
                 .dataVoto(LocalDateTime.now())
                 .pauta(pauta)

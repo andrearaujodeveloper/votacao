@@ -8,6 +8,8 @@ import com.associacao.votacao.repository.PautaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class PautaService implements IPautaService{
     
@@ -28,7 +30,30 @@ public class PautaService implements IPautaService{
         return pautaRepository.findById(id).orElseThrow(()->new RuntimeException("Pauta não encontrada"));
     }
 
+    @Override
+    public PautaResponse liberarVotacao(Long id) {
+        var pauta = buscarPautaPorId(id);
+        pautaEstaAberta(pauta);
+        pautaEncerrada(pauta);
+        pauta.setAbertaVotacao(true);
+        pauta.setDataAbertura(LocalDateTime.now());
+        pauta.setDataFechamento(LocalDateTime.now().plusMinutes(pauta.getDuracao()));
+        return PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
+    }
+
+    private void pautaEncerrada(Pauta pauta) {
+        if(!pauta.getAbertaVotacao() && pauta.getDataFechamento()!= null) {
+            throw new RuntimeException("Pauta encerrada: " + pauta.getDataFechamento());
+        }
+    }
+
     private boolean verificaDuplicidadeDePauta(PautaDTO pautaDTO){
         return pautaRepository.existsByTituloAndDescricao(pautaDTO.getTitulo(), pautaDTO.getDescricao());
+    }
+
+    private void pautaEstaAberta(Pauta pauta) {
+        if(pauta.getAbertaVotacao()){
+            throw new RuntimeException("Pauta aberta anteriormente: " + pauta.getDataAbertura());
+        }
     }
 }
