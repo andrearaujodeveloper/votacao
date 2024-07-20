@@ -2,6 +2,8 @@ package com.associacao.votacao.service;
 
 import com.associacao.votacao.dto.PautaDTO;
 import com.associacao.votacao.dto.PautaResponse;
+import com.associacao.votacao.dto.PautaResultadoProjection;
+import com.associacao.votacao.dto.PautaResultadoResponse;
 import com.associacao.votacao.mapper.PautaMapper;
 import com.associacao.votacao.model.Pauta;
 import com.associacao.votacao.repository.PautaRepository;
@@ -39,6 +41,12 @@ public class PautaService implements IPautaService{
         pauta.setDataAbertura(LocalDateTime.now());
         pauta.setDataFechamento(LocalDateTime.now().plusMinutes(pauta.getDuracao()));
         return PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
+    }
+
+    @Override
+    public PautaResultadoResponse contarVotos(Long id) {
+        PautaResultadoProjection projection = pautaRepository.contarVotos(id);
+        return new PautaResultadoResponse(projection.getTitulo(), projection.getDescricao(), projection.getVotosPositivos(), projection.getVotosNegativos());
     }
 
     private void pautaEncerrada(Pauta pauta) {
