@@ -36,4 +36,9 @@ public class Pauta {
     @OneToMany(mappedBy = "pauta", fetch = FetchType.LAZY)
     private List<Voto> votos;
 
+
+    public boolean pautaFoiEncerrada(){
+        return !this.getAbertaVotacao() && this.getDataAbertura() != null;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.associacao.votacao.service;
 
 import com.associacao.votacao.dto.AssociadoDTO;
 import com.associacao.votacao.dto.AssociadoResponse;
+import com.associacao.votacao.exception.DomainBusinessException;
 import com.associacao.votacao.mapper.AssociadoMapper;
 import com.associacao.votacao.model.Associado;
 import com.associacao.votacao.repository.AssociadoRepository;
@@ -20,7 +21,7 @@ public class AssociadoService implements IAssociadoService {
     public AssociadoResponse cadastrar(AssociadoDTO associadoDTO) {
         List<String> errosValidacao = validarDadosDeCadastro(associadoDTO);
         if(!errosValidacao.isEmpty()) {
-            throw new RuntimeException(errosValidacao.toString());
+            throw new DomainBusinessException(errosValidacao.toString());
         }
         Associado associado = AssociadoMapper.INSTANCE.toEntity(associadoDTO);
         return AssociadoMapper.INSTANCE.toResponse(associadoRepository.save(associado));

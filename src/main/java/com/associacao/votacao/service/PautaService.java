@@ -4,6 +4,7 @@ import com.associacao.votacao.dto.PautaDTO;
 import com.associacao.votacao.dto.PautaResponse;
 import com.associacao.votacao.dto.PautaResultadoProjection;
 import com.associacao.votacao.dto.PautaResultadoResponse;
+import com.associacao.votacao.exception.DomainBusinessException;
 import com.associacao.votacao.mapper.PautaMapper;
 import com.associacao.votacao.model.Pauta;
 import com.associacao.votacao.repository.PautaRepository;
@@ -21,7 +22,7 @@ public class PautaService implements IPautaService{
     @Override
     public PautaResponse cadastrar(PautaDTO pautaDTO) {
         if(verificaDuplicidadeDePauta(pautaDTO)){
-            throw new RuntimeException("Duplicidade de cadastro");
+            throw new DomainBusinessException("Duplicidade de cadastro");
         }
         Pauta pauta = PautaMapper.INSTANCE.toEntity(pautaDTO);
         return PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
@@ -35,8 +36,9 @@ public class PautaService implements IPautaService{
     @Override
     public PautaResponse liberarVotacao(Long id) {
         var pauta = buscarPautaPorId(id);
-        pautaEstaAberta(pauta);
-        pautaEncerrada(pauta);
+        if (pauta.pautaFoiEncerrada() || !pauta.getAbertaVotacao()) {
+            throw new DomainBusinessException("Não foi possível colocar pauta em votação");
+        }
         pauta.setAbertaVotacao(true);
         pauta.setDataAbertura(LocalDateTime.now());
         pauta.setDataFechamento(LocalDateTime.now().plusMinutes(pauta.getDuracao()));
@@ -49,19 +51,8 @@ public class PautaService implements IPautaService{
         return new PautaResultadoResponse(projection.getTitulo(), projection.getDescricao(), projection.getVotosPositivos(), projection.getVotosNegativos());
     }
 
-    private void pautaEncerrada(Pauta pauta) {
-        if(!pauta.getAbertaVotacao() && pauta.getDataFechamento()!= null) {
-            throw new RuntimeException("Pauta encerrada: " + pauta.getDataFechamento());
-        }
-    }
-
     private boolean verificaDuplicidadeDePauta(PautaDTO pautaDTO){
         return pautaRepository.existsByTituloAndDescricao(pautaDTO.getTitulo(), pautaDTO.getDescricao());
     }
 
-    private void pautaEstaAberta(Pauta pauta) {
-        if(pauta.getAbertaVotacao()){
-            throw new RuntimeException("Pauta aberta anteriormente: " + pauta.getDataAbertura());
-        }
-    }
 }

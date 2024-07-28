@@ -2,9 +2,8 @@ package com.associacao.votacao.service;
 
 import com.associacao.votacao.dto.VotoDTO;
 import com.associacao.votacao.dto.VotoResponse;
+import com.associacao.votacao.exception.DomainBusinessException;
 import com.associacao.votacao.mapper.VotoMapper;
-import com.associacao.votacao.model.Associado;
-import com.associacao.votacao.model.Pauta;
 import com.associacao.votacao.model.Voto;
 import com.associacao.votacao.repository.VotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +15,34 @@ import java.time.LocalDateTime;
 public class VotoService implements IvotoService {
 
     @Autowired
-    private ValidadorDadosVoto validadorDadosVoto;
-    @Autowired
     private VotoRepository votoRepository;
+
+    @Autowired
+    private PautaService pautaService;
+
+    @Autowired
+    private AssociadoService associadoService;
     @Override
     public VotoResponse votar(VotoDTO votoDTO) {
-        var pauta = validadorDadosVoto.validarPauta(votoDTO.getIdPauta());
-        var associado = validadorDadosVoto.validarAssociado(votoDTO.getIdAssociado());
+        var pauta = pautaService.buscarPautaPorId(votoDTO.getIdPauta());
+        var associado = associadoService.buscarAssociadoPorId(votoDTO.getIdAssociado());
         var voto = Voto.builder()
                 .valorVoto(votoDTO.getValorVoto())
                 .dataVoto(LocalDateTime.now())
                 .pauta(pauta)
                 .associado(associado)
                 .build();
-        voto = validadorDadosVoto.validarVoto(voto);
+
+        if(validarVoto(voto)){
+            throw new DomainBusinessException("Voto Inválido.");
+        }
 
         return VotoMapper.INSTANCE.toResponse(votoRepository.save(voto));
+    }
+
+    private boolean validarVoto(Voto voto) {
+        Voto votoSalvo = votoRepository.findByIdPautaAndIdAssociado(voto.getPauta().getId(), voto.getAssociado().getId());
+        return votoSalvo != null || !voto.getAssociado().getAtivo() || !voto.getPauta().getAbertaVotacao();
     }
 
 }
