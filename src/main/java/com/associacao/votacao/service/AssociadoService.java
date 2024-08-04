@@ -19,10 +19,8 @@ public class AssociadoService implements IAssociadoService {
     private AssociadoRepository associadoRepository;
     @Override
     public AssociadoResponse cadastrar(AssociadoDTO associadoDTO) {
-        List<String> errosValidacao = validarDadosDeCadastro(associadoDTO);
-        if(!errosValidacao.isEmpty()) {
-            throw new DomainBusinessException(errosValidacao.toString());
-        }
+        verificarEmailCadastrado(associadoDTO.getEmail());
+        verificarCPFCadastrado(associadoDTO.getCpf());
         Associado associado = AssociadoMapper.INSTANCE.toEntity(associadoDTO);
         return AssociadoMapper.INSTANCE.toResponse(associadoRepository.save(associado));
     }
@@ -31,19 +29,15 @@ public class AssociadoService implements IAssociadoService {
     public Associado buscarAssociadoPorId(Long id) {
         return associadoRepository.findById(id).orElseThrow(()-> new RuntimeException("Associado não encontrado"));
     }
+    private void verificarEmailCadastrado(String email){
+        if(associadoRepository.existsByEmail(email)) {
+            throw new DomainBusinessException("E-mail jpa cadastrado.");
+        }
+    }
 
-    private List<String> validarDadosDeCadastro(AssociadoDTO associadoDTO){
-        List<String> erros = new ArrayList<>();
-
-        if(associadoRepository.existsByEmail(associadoDTO.getEmail())){
-            erros.add("E-mail já cadastrado");
-        };
-
-        if(associadoRepository.existsByCpf(associadoDTO.getCpf())){
-            erros.add("CPF já cadastrado");
-        };
-
-
-        return erros;
+    private void verificarCPFCadastrado(String cpf){
+        if(associadoRepository.existsByCpf(cpf)) {
+            throw new DomainBusinessException("CPF jpa cadastrado.");
+        }
     }
 }

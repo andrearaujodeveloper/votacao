@@ -10,9 +10,8 @@ import org.springframework.lang.Nullable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 public class PautaDTO {
-    @NotBlank
+    @NotBlank()
     private String titulo;
     @NotBlank
     private String descricao;

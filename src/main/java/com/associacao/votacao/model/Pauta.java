@@ -24,7 +24,7 @@ public class Pauta {
     @NotBlank
     private String descricao;
     @NotNull
-    private LocalDateTime dataCriacao;
+    private LocalDateTime dataCriacao = LocalDateTime.now();
     @Nullable
     private LocalDateTime dataAbertura;
     @Nullable
@@ -41,4 +41,13 @@ public class Pauta {
         return !this.getAbertaVotacao() && this.getDataAbertura() != null;
     }
 
+    public void liberarParaVotacao() {
+        this.abertaVotacao = true;
+        this.dataAbertura = LocalDateTime.now();
+        this.dataFechamento = LocalDateTime.now().plusMinutes(this.duracao);
+    }
+
+    public void finalizarVOtacao() {
+        this.abertaVotacao = false;
+    }
 }

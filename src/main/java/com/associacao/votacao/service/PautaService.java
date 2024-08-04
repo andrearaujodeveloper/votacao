@@ -21,11 +21,10 @@ public class PautaService implements IPautaService{
 
     @Override
     public PautaResponse cadastrar(PautaDTO pautaDTO) {
-        if(verificaDuplicidadeDePauta(pautaDTO)){
-            throw new DomainBusinessException("Duplicidade de cadastro");
-        }
+        verificaDuplicidadeDePauta(pautaDTO);
         Pauta pauta = PautaMapper.INSTANCE.toEntity(pautaDTO);
-        return PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
+        var response = PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
+        return response;
     }
 
     @Override
@@ -39,9 +38,8 @@ public class PautaService implements IPautaService{
         if (pauta.pautaFoiEncerrada() || !pauta.getAbertaVotacao()) {
             throw new DomainBusinessException("Não foi possível colocar pauta em votação");
         }
-        pauta.setAbertaVotacao(true);
-        pauta.setDataAbertura(LocalDateTime.now());
-        pauta.setDataFechamento(LocalDateTime.now().plusMinutes(pauta.getDuracao()));
+
+        pauta.liberarParaVotacao();
         return PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
     }
 
@@ -51,8 +49,10 @@ public class PautaService implements IPautaService{
         return new PautaResultadoResponse(projection.getTitulo(), projection.getDescricao(), projection.getVotosPositivos(), projection.getVotosNegativos());
     }
 
-    private boolean verificaDuplicidadeDePauta(PautaDTO pautaDTO){
-        return pautaRepository.existsByTituloAndDescricao(pautaDTO.getTitulo(), pautaDTO.getDescricao());
+    private void verificaDuplicidadeDePauta(PautaDTO pautaDTO) {
+        if(pautaRepository.existsByTituloAndDescricao(pautaDTO.getTitulo(), pautaDTO.getDescricao())){
+            throw new DomainBusinessException("Duplicidade de cadastro");
+        }
     }
 
 }

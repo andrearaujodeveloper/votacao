@@ -15,13 +15,7 @@ public interface PautaMapper {
 
     PautaMapper INSTANCE = Mappers.getMapper(PautaMapper.class);
 
-    @Mapping(target= "dataCriacao", expression = "java(LocalDateTime.now())")
-    @Mapping(target = "abertaVotacao", constant = "false")
-    @Mapping(target = "votos" , expression = "java(new ArrayList<>())")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "dataAbertura", ignore = true)
-    @Mapping(target = "dataFechamento", ignore = true)
-    @Mapping(target = "duracao", source = "duracao", defaultValue = "1")
+
     Pauta toEntity(PautaDTO pautaDTO);
 
 

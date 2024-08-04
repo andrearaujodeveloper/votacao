@@ -33,16 +33,18 @@ public class VotoService implements IvotoService {
                 .associado(associado)
                 .build();
 
-        if(validarVoto(voto)){
-            throw new DomainBusinessException("Voto Inválido.");
-        }
+        validarVoto(voto);
 
         return VotoMapper.INSTANCE.toResponse(votoRepository.save(voto));
     }
 
-    private boolean validarVoto(Voto voto) {
+    private void validarVoto(Voto voto) {
         Voto votoSalvo = votoRepository.findByIdPautaAndIdAssociado(voto.getPauta().getId(), voto.getAssociado().getId());
-        return votoSalvo != null || !voto.getAssociado().getAtivo() || !voto.getPauta().getAbertaVotacao();
+        var votoInvalido = votoSalvo != null || !voto.getAssociado().getAtivo() || !voto.getPauta().getAbertaVotacao();
+
+        if(votoInvalido){
+            throw new DomainBusinessException("Voto Inválido.");
+        }
     }
 
 }
