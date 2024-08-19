@@ -3,31 +3,31 @@ package com.associacao.votacao.service;
 import com.associacao.votacao.dto.AssociadoDTO;
 import com.associacao.votacao.dto.AssociadoResponse;
 import com.associacao.votacao.exception.DomainBusinessException;
+import com.associacao.votacao.exception.NotFoundException;
 import com.associacao.votacao.mapper.AssociadoMapper;
 import com.associacao.votacao.model.Associado;
 import com.associacao.votacao.repository.AssociadoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@AllArgsConstructor
 @Service
 public class AssociadoService implements IAssociadoService {
 
-    @Autowired
     private AssociadoRepository associadoRepository;
+    private AssociadoMapper mapper;
+
     @Override
     public AssociadoResponse cadastrar(AssociadoDTO associadoDTO) {
-        verificarEmailCadastrado(associadoDTO.getEmail());
-        verificarCPFCadastrado(associadoDTO.getCpf());
-        Associado associado = AssociadoMapper.INSTANCE.toEntity(associadoDTO);
-        return AssociadoMapper.INSTANCE.toResponse(associadoRepository.save(associado));
+        verificarEmailCadastrado(associadoDTO.email());
+        verificarCPFCadastrado(associadoDTO.cpf());
+        Associado associado = mapper.toEntity(associadoDTO);
+        return mapper.toResponse(associadoRepository.save(associado));
     }
 
     @Override
     public Associado buscarAssociadoPorId(Long id) {
-        return associadoRepository.findById(id).orElseThrow(()-> new RuntimeException("Associado não encontrado"));
+        return associadoRepository.findById(id).orElseThrow(()-> new NotFoundException("Associado não encontrado"));
     }
     private void verificarEmailCadastrado(String email){
         if(associadoRepository.existsByEmail(email)) {

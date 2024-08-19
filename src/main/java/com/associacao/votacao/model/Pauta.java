@@ -26,13 +26,13 @@ public class Pauta {
     @NotNull
     private LocalDateTime dataCriacao = LocalDateTime.now();
     @Nullable
-    private LocalDateTime dataAbertura;
+    private LocalDateTime dataAbertura =  null;
     @Nullable
-    private LocalDateTime dataFechamento;
+    private LocalDateTime dataFechamento = null;
     @NotNull
-    private Integer duracao;
+    private Integer duracao = 1 ;
     @NotNull
-    private Boolean abertaVotacao;
+    private Boolean abertaVotacao = false;
     @OneToMany(mappedBy = "pauta", fetch = FetchType.LAZY)
     private List<Voto> votos;
 
@@ -47,7 +47,15 @@ public class Pauta {
         this.dataFechamento = LocalDateTime.now().plusMinutes(this.duracao);
     }
 
-    public void finalizarVOtacao() {
+    public void finalizarvotacao() {
         this.abertaVotacao = false;
+    }
+
+    public void inicializarDuracao(Integer duracao) {
+        if(duracao == null){
+            this.duracao = 1;
+        }else {
+            this.duracao = duracao;
+        }
     }
 }

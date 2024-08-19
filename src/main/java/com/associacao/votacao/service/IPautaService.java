@@ -13,7 +13,7 @@ public interface IPautaService {
 
     Pauta buscarPautaPorId(Long id);
 
-    PautaResponse liberarVotacao(Long id);
+    String liberarVotacao(Long id);
 
     PautaResultadoResponse contarVotos(Long id);
 }

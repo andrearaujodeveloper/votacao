@@ -19,19 +19,16 @@ public class PautaController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<PautaResponse> cadastrar(@RequestBody @Valid PautaDTO pautaDTO) {
-        return new ResponseEntity<PautaResponse>(pautaService.cadastrar(pautaDTO), HttpStatus.CREATED);
+        return new ResponseEntity(pautaService.cadastrar(pautaDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}/liberar-votacao")
-    public ResponseEntity<PautaResponse> liberarVotacao(@PathVariable Long id) {
-        return new ResponseEntity<PautaResponse>(pautaService.liberarVotacao(id), HttpStatus.OK);
+    public ResponseEntity<String> liberarVotacao(@PathVariable Long id) {
+        return ResponseEntity.ok(pautaService.liberarVotacao(id));
     }
 
     @GetMapping("/{id}/resultado")
     public ResponseEntity<PautaResultadoResponse> contarVotos(@PathVariable Long id) {
-        return new ResponseEntity<PautaResultadoResponse>(pautaService.contarVotos(id), HttpStatus.OK);
+        return ResponseEntity.ok(pautaService.contarVotos(id));
     }
-
-    //TODO tratamento de exceções
-    //TODO Testes
 }

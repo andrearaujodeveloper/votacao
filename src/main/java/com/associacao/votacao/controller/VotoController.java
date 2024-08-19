@@ -21,7 +21,7 @@ public class VotoController {
     @PostMapping()
     public ResponseEntity<VotoResponse> votar(@RequestBody @Valid VotoDTO votoDTO) {
 
-        return new ResponseEntity<>(votoService.votar(votoDTO), HttpStatus.CREATED);
+        return new ResponseEntity(votoService.votar(votoDTO), HttpStatus.CREATED);
 
     }
 }

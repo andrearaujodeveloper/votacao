@@ -21,7 +21,7 @@ public class FinalizadorDePautas {
         var pautas =  pautaRepository.findAllByAbertaVotacaoTrue();
         pautas.forEach( p ->{
             if(deveFecharPauta(p)) {
-                p.finalizarVOtacao();
+                p.finalizarvotacao();
                 pautaRepository.save(p);
             }
         });

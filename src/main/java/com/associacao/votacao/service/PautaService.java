@@ -5,42 +5,43 @@ import com.associacao.votacao.dto.PautaResponse;
 import com.associacao.votacao.dto.PautaResultadoProjection;
 import com.associacao.votacao.dto.PautaResultadoResponse;
 import com.associacao.votacao.exception.DomainBusinessException;
+import com.associacao.votacao.exception.NotFoundException;
 import com.associacao.votacao.mapper.PautaMapper;
 import com.associacao.votacao.model.Pauta;
 import com.associacao.votacao.repository.PautaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import static com.associacao.votacao.util.Mensagens.LIBERADA_PARA_VOTACAO;
 
+@AllArgsConstructor
 @Service
 public class PautaService implements IPautaService{
-    
-    @Autowired
     private PautaRepository pautaRepository;
 
+    private PautaMapper mapper;
     @Override
     public PautaResponse cadastrar(PautaDTO pautaDTO) {
         verificaDuplicidadeDePauta(pautaDTO);
-        Pauta pauta = PautaMapper.INSTANCE.toEntity(pautaDTO);
-        var response = PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
+        Pauta pauta = mapper.toEntity(pautaDTO);
+        pauta.inicializarDuracao(pautaDTO.duracao());
+        var response = mapper.toResponse(pautaRepository.save(pauta));
         return response;
     }
 
     @Override
     public Pauta buscarPautaPorId(Long id) {
-        return pautaRepository.findById(id).orElseThrow(()->new RuntimeException("Pauta não encontrada"));
+        return pautaRepository.findById(id).orElseThrow(()->new NotFoundException("Pauta não encontrada"));
     }
 
     @Override
-    public PautaResponse liberarVotacao(Long id) {
+    public String liberarVotacao(Long id) {
         var pauta = buscarPautaPorId(id);
-        if (pauta.pautaFoiEncerrada() || !pauta.getAbertaVotacao()) {
-            throw new DomainBusinessException("Não foi possível colocar pauta em votação");
-        }
-
+        verificaSePoderSerLiberadaParavotacao(pauta);
         pauta.liberarParaVotacao();
-        return PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
+        PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
+
+        return LIBERADA_PARA_VOTACAO;
     }
 
     @Override
@@ -50,8 +51,14 @@ public class PautaService implements IPautaService{
     }
 
     private void verificaDuplicidadeDePauta(PautaDTO pautaDTO) {
-        if(pautaRepository.existsByTituloAndDescricao(pautaDTO.getTitulo(), pautaDTO.getDescricao())){
+        if(pautaRepository.existsByTituloAndDescricao(pautaDTO.titulo(), pautaDTO.descricao())){
             throw new DomainBusinessException("Duplicidade de cadastro");
+        }
+    }
+
+    public void verificaSePoderSerLiberadaParavotacao(Pauta pauta) {
+        if (pauta.pautaFoiEncerrada() || pauta.getAbertaVotacao()) {
+            throw new DomainBusinessException("Não foi possível colocar pauta em votação");
         }
     }
 

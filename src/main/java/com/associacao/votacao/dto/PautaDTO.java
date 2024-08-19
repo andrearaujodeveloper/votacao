@@ -1,21 +1,9 @@
 package com.associacao.votacao.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.lang.Nullable;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-public class PautaDTO {
-    @NotBlank()
-    private String titulo;
-    @NotBlank
-    private String descricao;
-    @Nullable
-    private Integer duracao;
-
-}
+public record PautaDTO(
+        @NotBlank(message = "Título é obrigatório") String titulo,
+        @NotBlank(message = "Descrição é obrigatória") String descricao,
+        Integer duracao
+) {}
