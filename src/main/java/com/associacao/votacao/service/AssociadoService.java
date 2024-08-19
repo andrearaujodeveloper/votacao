@@ -10,6 +10,8 @@ import com.associacao.votacao.repository.AssociadoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @AllArgsConstructor
 @Service
 public class AssociadoService implements IAssociadoService {
@@ -21,13 +23,13 @@ public class AssociadoService implements IAssociadoService {
     public AssociadoResponse cadastrar(AssociadoDTO associadoDTO) {
         verificarEmailCadastrado(associadoDTO.email());
         verificarCPFCadastrado(associadoDTO.cpf());
-        Associado associado = mapper.toEntity(associadoDTO);
+        var associado = mapper.toEntity(associadoDTO);
         return mapper.toResponse(associadoRepository.save(associado));
     }
 
     @Override
     public Associado buscarAssociadoPorId(Long id) {
-        return associadoRepository.findById(id).orElseThrow(()-> new NotFoundException("Associado não encontrado"));
+        return Optional.ofNullable(associadoRepository.findByIdAndAtivoTrue(id)).orElseThrow(()-> new NotFoundException("Associado não encontrado"));
     }
     private void verificarEmailCadastrado(String email){
         if(associadoRepository.existsByEmail(email)) {

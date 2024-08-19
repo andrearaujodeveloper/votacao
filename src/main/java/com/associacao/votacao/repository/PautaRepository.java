@@ -14,6 +14,8 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
 
     List<Pauta> findAllByAbertaVotacaoTrue();
 
+    Pauta findByIdAndAbertaVotacaoTrue(Long id);
+
     @Query(value = "select p.titulo, p.descricao," +
             "COALESCE(sum(case when v.VALOR_VOTO = 'sim' then 1 else 0 end), 0) as votosPositivos, " +
             "COALESCE(sum(case when v.VALOR_VOTO = 'nao' then 1 else 0 end), 0) as votosNegativos " +

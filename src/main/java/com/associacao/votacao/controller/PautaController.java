@@ -2,6 +2,7 @@ package com.associacao.votacao.controller;
 
 import com.associacao.votacao.dto.PautaDTO;
 import com.associacao.votacao.dto.PautaResponse;
+import com.associacao.votacao.dto.PautaResultadoProjection;
 import com.associacao.votacao.dto.PautaResultadoResponse;
 import com.associacao.votacao.service.IPautaService;
 import jakarta.validation.Valid;
@@ -23,12 +24,13 @@ public class PautaController {
     }
 
     @PutMapping("/{id}/liberar-votacao")
-    public ResponseEntity<String> liberarVotacao(@PathVariable Long id) {
-        return ResponseEntity.ok(pautaService.liberarVotacao(id));
+    public ResponseEntity<HttpStatus> liberarVotacao(@PathVariable Long id) {
+        pautaService.liberarVotacao(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/resultado")
-    public ResponseEntity<PautaResultadoResponse> contarVotos(@PathVariable Long id) {
+    public ResponseEntity<PautaResultadoProjection> contarVotos(@PathVariable Long id) {
         return ResponseEntity.ok(pautaService.contarVotos(id));
     }
 }

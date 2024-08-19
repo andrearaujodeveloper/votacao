@@ -9,4 +9,6 @@ public interface AssociadoRepository extends JpaRepository<Associado, Long> {
     boolean existsByCpf(String cpf);
 
     boolean existsByEmail(String email);
+
+    Associado findByIdAndAtivoTrue(Long id);
 }

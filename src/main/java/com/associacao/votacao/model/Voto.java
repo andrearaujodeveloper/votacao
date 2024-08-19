@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 @Table(name = "VOTOS")
 @Entity
 public class Voto {

@@ -12,8 +12,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface VotoMapper {
 
-    VotoMapper INSTANCE = Mappers.getMapper(VotoMapper.class);
-
     @Mapping(target = "id", ignore = true)
     Voto toEntity(VotoDTO voto, Pauta pauta, Associado associado);
     VotoResponse toResponse(Voto voto);

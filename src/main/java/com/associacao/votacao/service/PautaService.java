@@ -12,6 +12,8 @@ import com.associacao.votacao.repository.PautaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 import static com.associacao.votacao.util.Mensagens.LIBERADA_PARA_VOTACAO;
 
 @AllArgsConstructor
@@ -25,29 +27,25 @@ public class PautaService implements IPautaService{
         verificaDuplicidadeDePauta(pautaDTO);
         Pauta pauta = mapper.toEntity(pautaDTO);
         pauta.inicializarDuracao(pautaDTO.duracao());
-        var response = mapper.toResponse(pautaRepository.save(pauta));
-        return response;
+        return mapper.toResponse(pautaRepository.save(pauta));
     }
 
     @Override
     public Pauta buscarPautaPorId(Long id) {
-        return pautaRepository.findById(id).orElseThrow(()->new NotFoundException("Pauta não encontrada"));
+        return Optional.ofNullable(pautaRepository.findByIdAndAbertaVotacaoTrue(id)).orElseThrow(()->new NotFoundException("Pauta não encontrada"));
     }
 
     @Override
-    public String liberarVotacao(Long id) {
+    public void liberarVotacao(Long id) {
         var pauta = buscarPautaPorId(id);
         verificaSePoderSerLiberadaParavotacao(pauta);
         pauta.liberarParaVotacao();
-        PautaMapper.INSTANCE.toResponse(pautaRepository.save(pauta));
-
-        return LIBERADA_PARA_VOTACAO;
+        pautaRepository.save(pauta);
     }
 
     @Override
-    public PautaResultadoResponse contarVotos(Long id) {
-        PautaResultadoProjection projection = pautaRepository.contarVotos(id);
-        return new PautaResultadoResponse(projection.getTitulo(), projection.getDescricao(), projection.getVotosPositivos(), projection.getVotosNegativos());
+    public PautaResultadoProjection contarVotos(Long id) {
+        return pautaRepository.contarVotos(id);
     }
 
     private void verificaDuplicidadeDePauta(PautaDTO pautaDTO) {

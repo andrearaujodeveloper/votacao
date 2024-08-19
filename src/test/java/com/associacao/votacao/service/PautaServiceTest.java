@@ -20,10 +20,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.associacao.votacao.util.Mensagens.LIBERADA_PARA_VOTACAO;
+import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PautaServiceTest {
@@ -43,7 +43,7 @@ class PautaServiceTest {
     }
 
     @Test
-    void cadastrar() {
+    void deveCadastrarPautaParaVotacao() {
         var dto = mockPautaDTO();
         var pauta = mockPauta();
         var pautaResponse = mockPautaResponse();
@@ -69,15 +69,15 @@ class PautaServiceTest {
     }
 
     @Test
-    void liberarVotacao() {
+    void deveLiberarPautaParaVotacao() {
 
         var pauta = mockPauta();
 
-        when(repository.findById(pauta.getId())).thenReturn(Optional.of(pauta));
+        when(repository.findByIdAndAbertaVotacaoTrue(pauta.getId())).thenReturn(pauta);
 
-        var response = service.liberarVotacao(pauta.getId());
+       service.liberarVotacao(pauta.getId());
 
-        assertEquals(response, LIBERADA_PARA_VOTACAO );
+        verify(repository,times(1)).save(pauta);
     }
 
     @Test
@@ -85,7 +85,7 @@ class PautaServiceTest {
 
         var pauta = mockPauta();
 
-        when(repository.findById(pauta.getId())).thenReturn(Optional.empty());
+        when(repository.findByIdAndAbertaVotacaoTrue(pauta.getId())).thenReturn(null);
 
         assertThrows(NotFoundException.class, () -> service.liberarVotacao(pauta.getId()));
     }
@@ -96,7 +96,7 @@ class PautaServiceTest {
         var pauta = mockPauta();
         pauta.setAbertaVotacao(true);
 
-        when(repository.findById(pauta.getId())).thenReturn(Optional.of(pauta));
+        when(repository.findByIdAndAbertaVotacaoTrue(pauta.getId())).thenReturn(pauta);
 
         assertThrows(DomainBusinessException.class, () -> service.liberarVotacao(pauta.getId()));
     }

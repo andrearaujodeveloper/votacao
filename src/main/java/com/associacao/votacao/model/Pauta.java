@@ -3,12 +3,16 @@ package com.associacao.votacao.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+//@SQLRestriction("abertaVotacao = true") restrição na clausula where automaticamente em todas as querys
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

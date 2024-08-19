@@ -4,7 +4,6 @@ import com.associacao.votacao.dto.VotoDTO;
 import com.associacao.votacao.dto.VotoResponse;
 import com.associacao.votacao.exception.DomainBusinessException;
 import com.associacao.votacao.mapper.VotoMapper;
-import com.associacao.votacao.model.Voto;
 import com.associacao.votacao.repository.VotoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,22 +19,20 @@ public class VotoService implements IvotoService {
     private VotoMapper mapper;
     @Override
     public VotoResponse votar(VotoDTO votoDTO) {
+        validarVoto(votoDTO.idPauta(), votoDTO.idAssociado());
         var pauta = pautaService.buscarPautaPorId(votoDTO.idPauta());
         var associado = associadoService.buscarAssociadoPorId(votoDTO.idAssociado());
         var voto = mapper.toEntity(votoDTO, pauta, associado);
         voto.registrarDataVoto();
-        validarVoto(voto);
 
         return mapper.toResponse(votoRepository.save(voto));
     }
 
-    private void validarVoto(Voto voto) {
-        Voto votoSalvo = votoRepository.findByIdPautaAndIdAssociado(voto.getPauta().getId(), voto.getAssociado().getId());
-        var votoInvalido = votoSalvo != null || !voto.getAssociado().getAtivo() ;
+    private void validarVoto(Long idPauta, Long idAssociado) {
+        var voto = votoRepository.findByIdPautaAndIdAssociado(idPauta, idAssociado);
 
-        if(votoInvalido){
+        if(voto != null){
             throw new DomainBusinessException("Voto Inválido.");
         }
     }
-
 }
