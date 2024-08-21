@@ -1,6 +1,6 @@
 package com.associacao.votacao.service;
 
-import com.associacao.votacao.AssociadoDataProvider;
+import com.associacao.votacao.provider.AssociadoDataProvider;
 import com.associacao.votacao.exception.DomainBusinessException;
 import com.associacao.votacao.mapper.AssociadoMapper;
 import com.associacao.votacao.repository.AssociadoRepository;

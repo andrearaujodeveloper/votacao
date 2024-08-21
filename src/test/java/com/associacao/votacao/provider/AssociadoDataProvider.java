@@ -1,4 +1,4 @@
-package com.associacao.votacao;
+package com.associacao.votacao.provider;
 
 import com.associacao.votacao.dto.AssociadoDTO;
 import com.associacao.votacao.dto.AssociadoResponse;
