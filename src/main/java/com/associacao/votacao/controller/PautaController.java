@@ -5,6 +5,7 @@ import com.associacao.votacao.dto.PautaResponse;
 import com.associacao.votacao.dto.PautaResultadoProjection;
 import com.associacao.votacao.dto.PautaResultadoResponse;
 import com.associacao.votacao.service.IPautaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/pautas")
+@SecurityRequirement(name = "bearer-key")
 public class PautaController {
 
     @Autowired
