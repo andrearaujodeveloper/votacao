@@ -11,6 +11,9 @@ public class AssociadoDataProvider {
     public static Associado criar() {
         return new Associado(1l, "Associado de Teste", "01234567891","associadoTeste@email.com", true, List.of());
     }
+    public static Associado criarSemId() {
+        return new Associado(null, "Associado de Teste", "01234567891","associadoTeste@email.com", true, List.of());
+    }
 
     public static AssociadoDTO criarDTO() {
         return new AssociadoDTO("Associado de Teste", "01234567891","associadoTeste@email.com");

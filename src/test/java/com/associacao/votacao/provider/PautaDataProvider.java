@@ -17,6 +17,14 @@ public class PautaDataProvider {
         return pauta;
     }
 
+    public static Pauta criarSemId() {
+        var pauta = new Pauta();
+        pauta.setTitulo("titulo teste");
+        pauta.setDescricao("descricao teste");
+        pauta.setDataCriacao(LocalDateTime.now());
+        return pauta;
+    }
+
     public static PautaDTO criarDTO() {
         return new PautaDTO("titulo teste", "descricao teste", 5);
     }
