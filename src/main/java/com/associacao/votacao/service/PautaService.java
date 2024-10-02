@@ -3,7 +3,6 @@ package com.associacao.votacao.service;
 import com.associacao.votacao.dto.PautaDTO;
 import com.associacao.votacao.dto.PautaResponse;
 import com.associacao.votacao.dto.PautaResultadoProjection;
-import com.associacao.votacao.dto.PautaResultadoResponse;
 import com.associacao.votacao.exception.DomainBusinessException;
 import com.associacao.votacao.exception.NotFoundException;
 import com.associacao.votacao.mapper.PautaMapper;
@@ -13,8 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import static com.associacao.votacao.util.Mensagens.LIBERADA_PARA_VOTACAO;
 
 @AllArgsConstructor
 @Service
@@ -31,13 +28,13 @@ public class PautaService implements IPautaService{
     }
 
     @Override
-    public Pauta buscarPautaPorId(Long id) {
+    public Pauta buscarPautaAbertaPorId(Long id) {
         return Optional.ofNullable(pautaRepository.findByIdAndAbertaVotacaoTrue(id)).orElseThrow(()->new NotFoundException("Pauta não encontrada"));
     }
 
     @Override
     public void liberarVotacao(Long id) {
-        var pauta = buscarPautaPorId(id);
+        var pauta = pautaRepository.findById(id).orElseThrow(()->new NotFoundException("Pauta não encontrada"));
         verificaSePoderSerLiberadaParavotacao(pauta);
         pauta.liberarParaVotacao();
         pautaRepository.save(pauta);

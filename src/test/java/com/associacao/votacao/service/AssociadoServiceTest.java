@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,6 +24,8 @@ class AssociadoServiceTest {
     @Mock
     AssociadoRepository repository;
 
+    @Mock
+    UsuarioService usuarioService;
     @Mock
     AssociadoMapper mapper;
 
@@ -45,6 +48,7 @@ class AssociadoServiceTest {
 
         var response = service.cadastrar(dto);
 
+        verify(usuarioService).cadastrarUsuario(associado.getEmail(),associado.getCpf());
         assertEquals(response, associadoResponse);
     }
 

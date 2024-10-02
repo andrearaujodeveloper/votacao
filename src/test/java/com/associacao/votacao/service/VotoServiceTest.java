@@ -48,7 +48,7 @@ class VotoServiceTest {
         when(mapper.toResponse(voto)).thenReturn(votoResponse);
         when(repository.findByIdPautaAndIdAssociado(dto.idPauta(), dto.idAssociado())).thenReturn(null);
         when(repository.save(voto)).thenReturn(voto);
-        when(pautaService.buscarPautaPorId(dto.idPauta())).thenReturn(pauta);
+        when(pautaService.buscarPautaAbertaPorId(dto.idPauta())).thenReturn(pauta);
         when(associadoService.buscarAssociadoPorId(dto.idAssociado())).thenReturn(associado);
 
         var response = service.votar(dto);

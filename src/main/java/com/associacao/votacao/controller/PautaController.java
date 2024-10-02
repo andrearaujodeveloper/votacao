@@ -3,7 +3,6 @@ package com.associacao.votacao.controller;
 import com.associacao.votacao.dto.PautaDTO;
 import com.associacao.votacao.dto.PautaResponse;
 import com.associacao.votacao.dto.PautaResultadoProjection;
-import com.associacao.votacao.dto.PautaResultadoResponse;
 import com.associacao.votacao.service.IPautaService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -35,4 +34,6 @@ public class PautaController {
     public ResponseEntity<PautaResultadoProjection> contarVotos(@PathVariable Long id) {
         return ResponseEntity.ok(pautaService.contarVotos(id));
     }
+
+
 }

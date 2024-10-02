@@ -1,11 +1,8 @@
 package com.associacao.votacao.service;
 
-import com.associacao.votacao.dto.PautaDTO;
-import com.associacao.votacao.dto.PautaResponse;
 import com.associacao.votacao.exception.DomainBusinessException;
 import com.associacao.votacao.exception.NotFoundException;
 import com.associacao.votacao.mapper.PautaMapper;
-import com.associacao.votacao.model.Pauta;
 import com.associacao.votacao.provider.PautaDataProvider;
 import com.associacao.votacao.repository.PautaRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,15 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.associacao.votacao.util.Mensagens.LIBERADA_PARA_VOTACAO;
-import static java.util.Optional.empty;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -73,7 +66,7 @@ class PautaServiceTest {
     void deveLiberarPautaParaVotacao() {
         var pauta = PautaDataProvider.criar();
 
-        when(repository.findByIdAndAbertaVotacaoTrue(pauta.getId())).thenReturn(pauta);
+        when(repository.findById(pauta.getId())).thenReturn(Optional.of(pauta));
 
         service.liberarVotacao(pauta.getId());
 
@@ -85,7 +78,7 @@ class PautaServiceTest {
 
         var pauta = PautaDataProvider.criar();
 
-        when(repository.findByIdAndAbertaVotacaoTrue(pauta.getId())).thenReturn(null);
+        when(repository.findById(pauta.getId())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> service.liberarVotacao(pauta.getId()));
     }
@@ -96,7 +89,7 @@ class PautaServiceTest {
         var pauta = PautaDataProvider.criar();
         pauta.setAbertaVotacao(true);
 
-        when(repository.findByIdAndAbertaVotacaoTrue(pauta.getId())).thenReturn(pauta);
+        when(repository.findById(pauta.getId())).thenReturn(Optional.of(pauta));
 
         assertThrows(DomainBusinessException.class, () -> service.liberarVotacao(pauta.getId()));
     }

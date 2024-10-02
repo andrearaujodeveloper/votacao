@@ -20,7 +20,7 @@ public class VotoService implements IvotoService {
     @Override
     public VotoResponse votar(VotoDTO votoDTO) {
         validarVoto(votoDTO.idPauta(), votoDTO.idAssociado());
-        var pauta = pautaService.buscarPautaPorId(votoDTO.idPauta());
+        var pauta = pautaService.buscarPautaAbertaPorId(votoDTO.idPauta());
         var associado = associadoService.buscarAssociadoPorId(votoDTO.idAssociado());
         var voto = mapper.toEntity(votoDTO, pauta, associado);
         voto.registrarDataVoto();
