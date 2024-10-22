@@ -23,9 +23,6 @@ class AssociadoServiceTest {
     AssociadoService service;
     @Mock
     AssociadoRepository repository;
-
-    @Mock
-    UsuarioService usuarioService;
     @Mock
     AssociadoMapper mapper;
 
@@ -48,7 +45,6 @@ class AssociadoServiceTest {
 
         var response = service.cadastrar(dto);
 
-        verify(usuarioService).cadastrarUsuario(associado.getEmail(),associado.getCpf());
         assertEquals(response, associadoResponse);
     }
 

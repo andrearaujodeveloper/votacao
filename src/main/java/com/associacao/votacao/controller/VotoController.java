@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("v1/votar")
-@SecurityRequirement(name = "bearer-key")
 public class VotoController {
 
     @Autowired

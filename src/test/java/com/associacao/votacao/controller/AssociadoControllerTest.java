@@ -2,9 +2,7 @@ package com.associacao.votacao.controller;
 
 import com.associacao.votacao.dto.AssociadoDTO;
 import com.associacao.votacao.dto.AssociadoResponse;
-import com.associacao.votacao.mapper.AssociadoMapper;
 import com.associacao.votacao.provider.AssociadoDataProvider;
-import com.associacao.votacao.repository.AssociadoRepository;
 import com.associacao.votacao.service.AssociadoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -38,8 +37,6 @@ class AssociadoControllerTest {
     @MockBean
     private AssociadoService associadoService;
 
-    @MockBean
-    private AssociadoRepository associadoRepository;
 
     @Test
     @WithMockUser

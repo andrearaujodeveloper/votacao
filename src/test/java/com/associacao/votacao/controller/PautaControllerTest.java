@@ -8,7 +8,6 @@ import com.associacao.votacao.provider.PautaResultadoProjectionDataProvider;
 import com.associacao.votacao.repository.PautaRepository;
 import com.associacao.votacao.service.PautaService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,8 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -46,8 +43,6 @@ class PautaControllerTest {
     @MockBean
     private PautaService pautaService;
 
-    @MockBean
-    private PautaRepository pautaRepository;
 
     @Test
     @WithMockUser

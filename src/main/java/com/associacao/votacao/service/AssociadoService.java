@@ -18,8 +18,6 @@ import java.util.Optional;
 public class AssociadoService implements IAssociadoService {
 
     private AssociadoRepository associadoRepository;
-
-    private UsuarioService usuarioService;
     private AssociadoMapper mapper;
 
     @Transactional
@@ -28,7 +26,6 @@ public class AssociadoService implements IAssociadoService {
         verificarEmailCadastrado(associadoDTO.email());
         verificarCPFCadastrado(associadoDTO.cpf());
         var associado = mapper.toEntity(associadoDTO);
-        usuarioService.cadastrarUsuario(associado.getEmail(), associado.getCpf());
         return mapper.toResponse(associadoRepository.save(associado));
     }
 

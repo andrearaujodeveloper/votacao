@@ -23,4 +23,9 @@ public class CustomExceptionHandler {
     public ResponseEntity tratarInternalServerError(Exception e) {
         return ResponseEntity.internalServerError().body(e.getMessage());
     }
+
+    @ExceptionHandler(MailException.class)
+    public ResponseEntity tratarErroNoEnvioDeEmail(MailException e) {
+        return ResponseEntity.ok().body(e.getMessage());
+    }
 }
