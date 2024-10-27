@@ -1,0 +1,1 @@
+insert into PAUTAS( id, titulo, descricao, data_criacao, data_abertura, data_fechamento, duracao, aberta_votacao) values(1, 'titulo teste', 'descricao teste', '2024-08-25 17:12:48', null, null, 5, 0);

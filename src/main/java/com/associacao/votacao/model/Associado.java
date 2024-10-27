@@ -28,4 +28,9 @@ public class Associado {
     private Boolean ativo = true;
     @OneToMany(mappedBy = "associado", fetch = FetchType.LAZY)
     private List<Voto> votos;
+
+
+    public void inativar(){
+        this.ativo = false;
+    }
 }

@@ -11,4 +11,6 @@ public interface IAssociadoService {
     AssociadoResponse cadastrar(AssociadoDTO associadoDTO);
 
     Associado buscarAssociadoPorId(Long id);
+
+    void apagarLogicamente(Long id);
 }

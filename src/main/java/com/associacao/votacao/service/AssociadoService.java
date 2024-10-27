@@ -33,6 +33,14 @@ public class AssociadoService implements IAssociadoService {
     public Associado buscarAssociadoPorId(Long id) {
         return Optional.ofNullable(associadoRepository.findByIdAndAtivoTrue(id)).orElseThrow(()-> new NotFoundException("Associado não encontrado"));
     }
+
+    @Override
+    public void apagarLogicamente(Long id) {
+        var associado = buscarAssociadoPorId(id);
+        associado.inativar();
+        associadoRepository.save(associado);
+    }
+
     private void verificarEmailCadastrado(String email){
         if(associadoRepository.existsByEmail(email)) {
             throw new DomainBusinessException("E-mail jpa cadastrado.");

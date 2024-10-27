@@ -1,10 +1,11 @@
-package com.associacao.votacao.repository;
+package com.associacao.votacao.service.repository;
 
 import com.associacao.votacao.model.Associado;
 import com.associacao.votacao.model.Pauta;
 import com.associacao.votacao.provider.AssociadoDataProvider;
 import com.associacao.votacao.provider.PautaDataProvider;
 import com.associacao.votacao.provider.VotoDataProvider;
+import com.associacao.votacao.repository.VotoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

@@ -1,0 +1,2 @@
+insert into ASSOCIADOS(id, nome, cpf, email, ativo)values(1, 'andre luis', '01033856061', 'andreluis@email.com', 1);
+insert into ASSOCIADOS(id, nome, cpf, email, ativo)values(2, 'João', '01033856062', 'joao@email.com', 1);
