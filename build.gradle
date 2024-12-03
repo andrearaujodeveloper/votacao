@@ -59,3 +59,18 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+test {
+	useJUnitPlatform()
+	include '**/unit/**'
+	systemProperty 'spring.profiles.active', 'test'
+}
+
+task integrationTest(type: Test) {
+	useJUnitPlatform()
+	include '**/integration/**'
+	systemProperty 'spring.profiles.active', 'testeIntegration'
+	testClassesDirs = sourceSets.test.output.classesDirs
+	classpath = sourceSets.test.runtimeClasspath
+	shouldRunAfter test
+}
